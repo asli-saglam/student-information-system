@@ -1,0 +1,73 @@
+﻿@model Ogrenci
+
+@{
+    ViewData["Title"] = "Öğrenci Detayları";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4>@Model.Ad @Model.Soyad</h4>
+            <a asp-action="Index" class="btn btn-light btn-sm">
+                <i class="fas fa-arrow-left"></i> Listeye Dön
+            </a>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Öğrenci No:</dt>
+                <dd class="col-sm-9">@Model.OgrenciID</dd>
+
+                <dt class="col-sm-3">Bölüm:</dt>
+                <dd class="col-sm-9">@Model.Bolum?.BolumAd</dd>
+
+                <dt class="col-sm-3">Fakülte:</dt>
+                <dd class="col-sm-9">@Model.Bolum?.Fakulte?.FakulteAd</dd>
+
+                <dt class="col-sm-3">Kayıtlı Dersler:</dt>
+                <dd class="col-sm-9">
+                    @if (Model.OgrenciDersler.Any())
+                    {
+                        <ul class="list-group">
+                            @foreach (var od in Model.OgrenciDersler)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    @od.Ders.DersAd
+                                    <span class="badge bg-primary rounded-pill">
+                                        @od.Yil @od.Yariyil
+                                    </span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Kayıtlı ders bulunmamaktadır</span>
+                    }
+                </dd>
+            </dl>
+        </div>
+        <div class="card-footer text-center">
+            <a asp-action="Edit" asp-route-id="@Model.OgrenciID" class="btn btn-warning btn-lg">
+                <i class="fas fa-edit"></i> Düzenle
+            </a>
+            <a asp-action="Delete" asp-route-id="@Model.OgrenciID" class="btn btn-danger btn-lg">
+                <i class="fas fa-trash"></i> Sil
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .list-group-item {
+            margin-bottom: 5px;
+            border-radius: 10px !important;
+            background-color: #f8f9fa;
+            transition: background-color 0.3s;
+        }
+
+            .list-group-item:hover {
+                background-color: #e9ecef;
+            }
+    </style>
+}

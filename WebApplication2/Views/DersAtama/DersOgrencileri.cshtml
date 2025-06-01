@@ -1,0 +1,95 @@
+﻿@model Ders
+
+@{
+    ViewData["Title"] = $"{Model.DersAd} Dersini Alan Öğrenciler";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-primary text-white rounded-top-4 d-flex justify-content-between align-items-center">
+            <h4 class="mb-0"><i class="fas fa-users me-2"></i>@ViewData["Title"]</h4>
+            <span class="badge bg-light text-dark px-3 py-2">
+                @Model.OgrenciDersler.Count öğrenci
+            </span>
+        </div>
+
+        <form asp-action="NotKaydet" method="post">
+            <input type="hidden" name="dersID" value="@Model.DersID" />
+
+            <div class="card-body p-4">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover text-center align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Öğrenci No</th>
+                                <th>Ad Soyad</th>
+                                <th>Vize</th>
+                                <th>Final</th>
+                                <th>Ortalama</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var od in Model.OgrenciDersler)
+                            {
+                                var ortalama = od.Vize.HasValue && od.Final.HasValue
+                                ? (od.Vize * 0.4 + od.Final * 0.6)
+                                : (double?)null;
+
+                                <tr>
+                                    <td>@od.Ogrenci.OgrenciID</td>
+                                    <td>@od.Ogrenci.Ad @od.Ogrenci.Soyad</td>
+                                    <td>
+                                        <input type="number"
+                                               name="notlar[@od.OgrenciID].vize"
+                                               value="@od.Vize"
+                                               class="form-control form-control-sm text-center"
+                                               min="0" max="100" />
+                                    </td>
+                                    <td>
+                                        <input type="number"
+                                               name="notlar[@od.OgrenciID].final"
+                                               value="@od.Final"
+                                               class="form-control form-control-sm text-center"
+                                               min="0" max="100" />
+                                    </td>
+                                    <td>
+                                        <span class="fw-semibold">
+                                            @(ortalama.HasValue ? ortalama.Value.ToString("0.00") : "-")
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card-footer d-flex justify-content-between px-4 py-3 bg-light rounded-bottom-4">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-save me-1"></i> Notları Kaydet
+                </button>
+                <a asp-controller="Ders" asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Geri Dön
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        .form-control-sm {
+            width: 80px;
+            margin: 0 auto;
+        }
+
+        .table td, .table th {
+            vertical-align: middle;
+        }
+
+        .badge {
+            font-size: 0.9em;
+        }
+    </style>
+}

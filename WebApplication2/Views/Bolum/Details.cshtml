@@ -1,0 +1,88 @@
+﻿@model Bolum
+
+@{
+    ViewData["Title"] = "Bölüm Detayları";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg rounded-4 border-0">
+        <div class="card-header bg-primary text-white rounded-top-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="mb-0">@Model.BolumAd</h3>
+                <a asp-action="Index" class="btn btn-light btn-sm">
+                    <i class="fas fa-arrow-left"></i> Listeye Dön
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <dl class="row mb-4">
+                <dt class="col-sm-4 fw-bold text-secondary">Bölüm Kodu:</dt>
+                <dd class="col-sm-8">@Model.BolumID</dd>
+
+                <dt class="col-sm-4 fw-bold text-secondary">Fakülte:</dt>
+                <dd class="col-sm-8">@Model.Fakulte?.FakulteAd</dd>
+
+                <dt class="col-sm-4 fw-bold text-secondary">Öğrenci Sayısı:</dt>
+                <dd class="col-sm-8">
+                    <span class="badge bg-info fs-6">@ViewBag.OgrenciSayisi</span>
+                </dd>
+            </dl>
+
+            <h5 class="text-primary mb-3"><i class="fas fa-users"></i> Öğrenci Listesi</h5>
+
+            @if (Model.Ogrenciler.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle text-center">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Öğrenci No</th>
+                                <th>Ad Soyad</th>
+                                <th>Detay</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var ogrenci in Model.Ogrenciler)
+                            {
+                                <tr>
+                                    <td>@ogrenci.OgrenciID</td>
+                                    <td>@ogrenci.Ad @ogrenci.Soyad</td>
+                                    <td>
+                                        <a asp-controller="Ogrenci" asp-action="Details"
+                                           asp-route-id="@ogrenci.OgrenciID" class="btn btn-sm btn-outline-info">
+                                            <i class="fas fa-info-circle"></i> Görüntüle
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-secondary text-center" role="alert">
+                    Bu bölümde henüz öğrenci bulunmamaktadır.
+                </div>
+            }
+        </div>
+
+        <div class="card-footer d-flex justify-content-end gap-3">
+            <a asp-action="Edit" asp-route-id="@Model.BolumID" class="btn btn-warning px-4">
+                <i class="fas fa-edit"></i> Düzenle
+            </a>
+            <a asp-action="Delete" asp-route-id="@Model.BolumID" class="btn btn-danger px-4">
+                <i class="fas fa-trash"></i> Sil
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .table th, .table td {
+            vertical-align: middle;
+        }
+    </style>
+}

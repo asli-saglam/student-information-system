@@ -1,0 +1,90 @@
+﻿@model WebApplication2.Models.ViewModels.DersIstatistikListViewModel
+
+@{
+    ViewData["Title"] = "Ders İstatistikleri";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4><i class="fas fa-chart-bar"></i> @ViewData["Title"]</h4>
+        </div>
+
+        <div class="card-body">
+            <form method="get" class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label">Yıl:</label>
+                    <select name="yil" class="form-select">
+                        <option value="">Tüm Yıllar</option>
+                        @foreach (var yil in Model.Yillar)
+                        {
+                            <option value="@yil" selected="@(yil == Model.Yil)">@yil</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Yarıyıl:</label>
+                    <select name="yariyil" class="form-select">
+                        <option value="">Tüm Yarıyıllar</option>
+                        @foreach (var yariyil in Model.Yariyillar)
+                        {
+                            <option value="@yariyil" selected="@(yariyil == Model.Yariyil)">@yariyil</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-filter"></i> Filtrele
+                    </button>
+                </div>
+            </form>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Ders Adı</th>
+                            <th>Öğrenci Sayısı</th>
+                            <th>Başarı Oranı</th>
+                            <th>Grafik</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var istatistik in Model.Istatistikler)
+                        {
+                            <tr>
+                                <td>@istatistik.DersAd</td>
+                                <td>@istatistik.OgrenciSayisi</td>
+                                <td>@istatistik.BasariOrani.ToString("0.00")%</td>
+                                <td>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar bg-success"
+                                             style="width: @istatistik.BasariOrani%;"
+                                             role="progressbar"
+                                             aria-valuenow="@istatistik.BasariOrani"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.progress-bar').each(function () {
+                var value = $(this).attr('aria-valuenow');
+                $(this).text(value + '%');
+            });
+        });
+    </script>
+}

@@ -1,0 +1,47 @@
+﻿@model Ogrenci
+
+@{
+    ViewData["Title"] = "Öğrenci Sil";
+}
+
+<div class="container mt-5">
+    <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+        <div>
+            <h4 class="mb-1">@ViewData["Title"]</h4>
+            <p class="mb-0">Bu öğrenciyi silmek istediğinize emin misiniz? Bu işlem geri alınamaz.</p>
+        </div>
+    </div>
+
+    <div class="card border-danger shadow-sm mt-4">
+        <div class="card-header bg-danger text-white">
+            <h5 class="mb-0"><i class="fas fa-user"></i> Öğrenci Bilgileri</h5>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3 fw-bold">Öğrenci No</dt>
+                <dd class="col-sm-9">@Model.OgrenciID</dd>
+
+                <dt class="col-sm-3 fw-bold">Ad Soyad</dt>
+                <dd class="col-sm-9">@Model.Ad @Model.Soyad</dd>
+
+                <dt class="col-sm-3 fw-bold">Bölüm</dt>
+                <dd class="col-sm-9">@Model.Bolum?.BolumAd</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" class="mt-4 d-flex justify-content-between">
+        <input type="hidden" asp-for="OgrenciID" />
+        <button type="submit" class="btn btn-lg btn-danger">
+            <i class="fas fa-trash-alt me-2"></i> Öğrenciyi Sil
+        </button>
+        <a asp-action="Index" class="btn btn-lg btn-secondary">
+            <i class="fas fa-arrow-left me-2"></i> Geri Dön
+        </a>
+    </form>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+}

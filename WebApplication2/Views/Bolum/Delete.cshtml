@@ -1,0 +1,50 @@
+﻿@model Bolum
+
+@{
+    ViewData["Title"] = "Bölüm Sil";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-danger shadow-sm rounded-4">
+                <div class="card-header bg-danger text-white text-center rounded-top-4">
+                    <h3 class="mb-0"> Bölüm Silme Onayı</h3>
+                    <small>Bu işlemi gerçekleştirmeden önce dikkatli olun!</small>
+                </div>
+
+                <div class="card-body">
+                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <i class="fas fa-exclamation-triangle fa-lg me-2"></i>
+                        <div>
+                            <strong>Uyarı:</strong> Bu bölümü silerseniz, ilişkili öğrenciler ve veriler etkilenebilir!
+                        </div>
+                    </div>
+
+                    <h5 class="text-danger mb-3">Bu bölümü silmek istediğinize emin misiniz?</h5>
+
+                    <dl class="row">
+                        <dt class="col-sm-4 fw-semibold text-secondary">Bölüm Kodu:</dt>
+                        <dd class="col-sm-8">@Model.BolumID</dd>
+
+                        <dt class="col-sm-4 fw-semibold text-secondary">Bölüm Adı:</dt>
+                        <dd class="col-sm-8">@Model.BolumAd</dd>
+
+                        <dt class="col-sm-4 fw-semibold text-secondary">Fakülte:</dt>
+                        <dd class="col-sm-8">@Model.Fakulte?.FakulteAd</dd>
+                    </dl>
+
+                    <form asp-action="Delete" class="mt-4 d-flex justify-content-end gap-3">
+                        <input type="hidden" asp-for="BolumID" />
+                        <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                            İptal
+                        </a>
+                        <button type="submit" class="btn btn-danger px-4">
+                            Sil
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

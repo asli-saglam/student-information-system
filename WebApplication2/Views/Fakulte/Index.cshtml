@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Fakulte>
+
+@{
+    ViewData["Title"] = "Fakülte Listesi";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="fw-bold text-primary"><i class="fas fa-university me-2"></i>Fakülte Listesi</h3>
+        <a asp-action="Create" class="btn btn-success">
+            <i class="fas fa-plus me-1"></i> Yeni Fakülte Ekle
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover shadow-sm rounded">
+            <thead class="table-primary">
+                <tr>
+                    <th style="width: 10%">#</th>
+                    <th>Fakülte Adı</th>
+                    <th style="width: 25%">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="align-middle">@item.FakulteID</td>
+                        <td class="align-middle">@item.FakulteAd</td>
+                        <td class="align-middle">
+                            <a asp-action="Edit" asp-route-id="@item.FakulteID" class="btn btn-sm btn-warning me-2">
+                                <i class="fas fa-edit"></i> Düzenle
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.FakulteID" class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash-alt"></i> Sil
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .table {
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .btn {
+            border-radius: 0.4rem;
+        }
+    </style>
+}

@@ -1,0 +1,42 @@
+﻿@model Ders
+
+@{
+    ViewData["Title"] = "Ders Sil";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="alert alert-danger text-center shadow-sm">
+                <h4 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i>@ViewData["Title"]</h4>
+                <p class="mb-1">Bu dersi silmek istediğinizden emin misiniz?</p>
+                <p class="fw-bold">Silme işlemi geri alınamaz.</p>
+            </div>
+
+            <div class="card border-danger shadow rounded-4">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0"><i class="fas fa-book me-2"></i>Ders Bilgileri</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Ders Kodu:</dt>
+                        <dd class="col-sm-8">@Model.DersID</dd>
+
+                        <dt class="col-sm-4">Ders Adı:</dt>
+                        <dd class="col-sm-8">@Model.DersAd</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <form asp-action="Delete" class="mt-4 d-flex justify-content-between">
+                <input type="hidden" asp-for="DersID" />
+                <button type="submit" class="btn btn-danger px-4">
+                    <i class="fas fa-trash-alt me-1"></i> Sil
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary px-4">
+                    <i class="fas fa-arrow-left me-1"></i> İptal
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

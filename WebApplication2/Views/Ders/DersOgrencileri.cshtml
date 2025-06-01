@@ -1,0 +1,141 @@
+﻿@model Ders
+
+@{
+    ViewData["Title"] = $"{Model.DersAd} Dersini Alan Öğrenciler";
+}
+
+<div class="container mt-5">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success shadow-sm text-center rounded-pill py-2">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="card shadow border-0 rounded-4">
+        <div class="card-header bg-gradient bg-primary text-white rounded-top-4">
+            <h4 class="mb-0 d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-users me-2"></i>@ViewData["Title"]</span>
+                <span class="badge bg-light text-dark fs-6">@Model.OgrenciDersler.Count öğrenci</span>
+            </h4>
+        </div>
+
+        <form asp-action="NotGuncelle" method="post">
+            <input type="hidden" name="dersId" value="@Model.DersID" />
+
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover mb-0 text-center align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Öğrenci No</th>
+                                <th>Ad Soyad</th>
+                                <th>Vize</th>
+                                <th>Final</th>
+                                <th>Ortalama</th>
+                                <th>Durum</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var od in Model.OgrenciDersler)
+                            {
+                                var ortalama = od.Vize.HasValue && od.Final.HasValue
+                                ? (od.Vize * 0.4 + od.Final * 0.6)
+                                : (double?)null;
+                                <tr>
+                                    <td>@od.Ogrenci.OgrenciID</td>
+                                    <td>@od.Ogrenci.Ad @od.Ogrenci.Soyad</td>
+                                    <td>
+                                        <input type="number" name="notlar[@od.OgrenciID].Vize"
+                                               value="@od.Vize"
+                                               class="form-control form-control-sm text-center"
+                                               min="0" max="100" />
+                                    </td>
+                                    <td>
+                                        <input type="number" name="notlar[@od.OgrenciID].Final"
+                                               value="@od.Final"
+                                               class="form-control form-control-sm text-center"
+                                               min="0" max="100" />
+                                    </td>
+                                    <td>
+                                        @if (ortalama.HasValue)
+                                        {
+                                            <span>@ortalama.Value.ToString("0.00")</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (ortalama.HasValue)
+                                        {
+                                            var durum = ortalama >= 50 ? "Geçti" : "Kaldı";
+                                            var renk = ortalama >= 50 ? "bg-success" : "bg-danger";
+                                            <span class="badge @renk rounded-pill">@durum</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary rounded-pill">-</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card-footer bg-light d-flex justify-content-between align-items-center">
+                <button type="submit" class="btn btn-primary px-4 shadow-sm">
+                    <i class="fas fa-save me-1"></i> Notları Kaydet
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary px-4 shadow-sm">
+                    <i class="fas fa-arrow-left me-1"></i> Ders Listesi
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('input[type="number"]').change(function () {
+                var row = $(this).closest('tr');
+                var vize = parseFloat(row.find('input[name*="Vize"]').val()) || 0;
+                var final = parseFloat(row.find('input[name*="Final"]').val()) || 0;
+
+                if (vize >= 0 && final >= 0) {
+                    var ort = (vize * 0.4 + final * 0.6).toFixed(2);
+                    row.find('td:eq(4)').html(ort);
+
+                    var badge = row.find('td:eq(5) .badge');
+                    badge.removeClass('bg-success bg-danger bg-secondary')
+                        .addClass(ort >= 50 ? 'bg-success' : 'bg-danger')
+                        .text(ort >= 50 ? 'Geçti' : 'Kaldı');
+                }
+            });
+        });
+    </script>
+
+    <style>
+        input[type="number"] {
+            width: 70px;
+            text-align: center;
+        }
+
+        .badge {
+            font-size: 0.85rem;
+            padding: 6px 12px;
+        }
+
+        .table td, .table th {
+            vertical-align: middle;
+        }
+
+        .card-footer {
+            padding: 1rem 1.5rem;
+        }
+    </style>
+}

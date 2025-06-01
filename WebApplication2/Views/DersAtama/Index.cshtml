@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Ders Atama";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-success text-white rounded-top-4">
+            <h4 class="mb-0"><i class="fas fa-chalkboard-teacher me-2"></i>Ders Atama</h4>
+        </div>
+
+        <form asp-action="Index" method="post">
+            <div class="card-body p-4">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Öğrenci</label>
+                    <select name="ogrenciID" class="form-select" asp-items="ViewBag.Ogrenciler" required>
+                        <option value="">-- Öğrenci Seçin --</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Ders</label>
+                    <select name="dersID" class="form-select" asp-items="ViewBag.Dersler" required>
+                        <option value="">-- Ders Seçin --</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Yıl</label>
+                    <input name="yil" class="form-control" placeholder="Örn: 2023-2024" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Yarıyıl</label>
+                    <select name="yariyil" class="form-select" required>
+                        <option value="">-- Yarıyıl Seçin --</option>
+                        <option value="Güz">Güz</option>
+                        <option value="Bahar">Bahar</option>
+                        <option value="Yaz">Yaz</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card-footer bg-light rounded-bottom-4 d-flex justify-content-between">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-plus-circle me-1"></i> Ders Ata
+                </button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-times me-1"></i> İptal
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        .form-select, .form-control {
+            border-radius: 0.5rem;
+        }
+
+        label.form-label {
+            margin-bottom: 0.25rem;
+        }
+    </style>
+}

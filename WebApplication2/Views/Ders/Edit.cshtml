@@ -1,0 +1,72 @@
+﻿@model Ders
+
+@{
+    ViewData["Title"] = "Ders Düzenle";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-header bg-info text-white rounded-top-4">
+                    <h4 class="mb-0"><i class="fas fa-edit me-2"></i>@ViewData["Title"]</h4>
+                </div>
+
+                <div class="card-body p-4">
+                    <form asp-action="Edit">
+                        <input type="hidden" asp-for="DersID" />
+
+                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ErrorCount > 0)
+                        {
+                            <div class="alert alert-danger rounded-3">
+                                Lütfen tüm gerekli alanları doğru şekilde doldurun.
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label asp-for="DersAd" class="form-label fw-semibold">Ders Adı</label>
+                            <input asp-for="DersAd" class="form-control form-control-lg shadow-sm" />
+                            <span asp-validation-for="DersAd" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="submit" class="btn btn-success px-4 shadow-sm">
+                                <i class="fas fa-save me-1"></i> Güncelle
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary px-4 shadow-sm">
+                                <i class="fas fa-arrow-left me-1"></i> Geri Dön
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <style>
+        .form-control-lg {
+            font-size: 1.1rem;
+            border-radius: 0.75rem;
+        }
+
+        .card-header {
+            font-size: 1.25rem;
+        }
+
+        label.form-label {
+            font-weight: 600;
+        }
+
+        .btn i {
+            vertical-align: middle;
+        }
+
+        .text-danger.small {
+            font-size: 0.875rem;
+        }
+    </style>
+}

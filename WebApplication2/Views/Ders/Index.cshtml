@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Ders>
+
+@{
+    ViewData["Title"] = "Ders Listesi";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
+            <h4 class="mb-0"><i class="fas fa-book me-2"></i>@ViewData["Title"]</h4>
+            <a asp-action="Create" class="btn btn-light text-primary fw-semibold shadow-sm">
+                <i class="fas fa-plus me-1"></i> Yeni Ders Ekle
+            </a>
+        </div>
+
+        <div class="card-body p-4">
+            @if (!Model.Any())
+            {
+                <div class="alert alert-warning text-center">
+                    Henüz bir ders eklenmemiş.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover text-center align-middle shadow-sm">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 15%">Ders Kodu</th>
+                                <th>Ders Adı</th>
+                                <th style="width: 30%">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.DersID</td>
+                                    <td>@item.DersAd</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                            <a asp-action="Edit" asp-route-id="@item.DersID" class="btn btn-sm btn-outline-warning">
+                                                <i class="fas fa-edit me-1"></i> Düzenle
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.DersID" class="btn btn-sm btn-outline-danger">
+                                                <i class="fas fa-trash me-1"></i> Sil
+                                            </a>
+                                            <a asp-action="DersOgrencileri" asp-route-id="@item.DersID" class="btn btn-sm btn-outline-info">
+                                                <i class="fas fa-users me-1"></i> Öğrenciler
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+    <style>
+        .table th, .table td {
+            vertical-align: middle;
+            padding: 0.75rem;
+        }
+
+        .btn-sm i {
+            vertical-align: middle;
+        }
+
+        .card-header h4 {
+            font-size: 1.25rem;
+        }
+
+        .gap-2 {
+            gap: 0.5rem !important;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
+}
